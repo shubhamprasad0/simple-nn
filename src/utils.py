@@ -10,6 +10,7 @@ def activation(Z, func_name):
     func_name : string denoting the activation function name.
                 'sigmoid' : refers to the sigmoid activation function.
                 'relu' : refers to the ReLU activation function.
+                'softmax' : refers to the softmax activation function.
 
     Returns:
     A : real value or numpy array of the same dimension as Z, obtained after
@@ -20,6 +21,8 @@ def activation(Z, func_name):
         A = sigmoid(Z)
     elif func_name == 'relu':
         A = relu(Z)
+    elif func_name == 'softmax':
+        A = softmax(Z)
 
     return A
 
@@ -54,6 +57,22 @@ def relu(Z):
 
     A = np.maximum(0, Z)
     return A
+
+
+def softmax(Z):
+    ''' This method applies the softmax activation to a vector Z and returns
+    the output.
+
+    Arguments:
+    Z : a numpy array of shape (n, m)
+
+    Returns:
+    softmax_Z : a numpy array of shape (n, m)
+    '''
+
+    t = np.exp(Z)
+    t = t / np.sum(t, axis=0, keepdims=True)
+    return t
 
 
 def one_hot_encoding(Y, num_classes):
@@ -102,6 +121,18 @@ def relu_gradient(Z):
     return relu_gradient
 
 
+def softmax_gradient(Z):
+    ''' This method finds the derivative of the softmax activation function and
+    finds and returns the value of the derivative for the input Z.
+
+    Arguments:
+    Z : real value or numpy array.
+
+    Returns:
+    softmax_gradient : value of the derivative of softmax function at Z.
+    '''
+
+
 def activation_gradient(Z, func_name):
     ''' This method applies the derivative of the activation function
     specified by 'func_name' to 'Z' and returns the value obtained.
@@ -111,6 +142,7 @@ def activation_gradient(Z, func_name):
     func_name : string denoting the activation function name.
                 'sigmoid' : refers to the sigmoid activation function.
                 'relu' : refers to the ReLU activation function.
+                'softmax' : refers to the softmax activation fucntion.
 
     Returns:
     A : real value or numpy array of the same dimension as Z, obtained after
@@ -119,8 +151,10 @@ def activation_gradient(Z, func_name):
 
     if func_name == 'sigmoid':
         return sigmoid_gradient(Z)
-    else:
+    elif func_name == 'relu':
         return relu_gradient(Z)
+    elif func_name == 'softmax':
+        return softmax_gradient(Z)
 
 
 def one_hot_decoding(Y_hat):
@@ -134,12 +168,12 @@ def one_hot_decoding(Y_hat):
     Y : a matrix of output labels of shape (1, m)
     '''
 
-    Y = np.argmax(Y_hat)
+    Y = np.argmax(Y_hat, axis=0).reshape(1, Y_hat.shape[1])
     return Y
 
 
 def generate_output_file(Y_hat):
-    ''' This file generates the output file in required format.
+    ''' This method generates the output file in required format.
 
     Arguments:
     Y_hat : This matrix contains the predicted labels.
@@ -149,3 +183,20 @@ def generate_output_file(Y_hat):
         outfile.write('ImageId,Label\n')
         for i, val in enumerate(Y_hat):
             outfile.write(str(i + 1) + ',' + val + '\n')
+
+
+def score(Y_hat, Y):
+    ''' This method calculates and returns the accuracy of the predictive model.
+
+    Arguments:
+    Y_hat : predicted labels
+    Y : actual labels
+
+    Returns:
+    accuracy : fraction of correctly labelled examples
+    '''
+
+    m = Y.shape[1]  # no. of training examples
+
+    accuracy = np.sum(Y_hat == Y) / m
+    return accuracy

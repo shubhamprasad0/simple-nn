@@ -1,7 +1,6 @@
 import numpy as np
 from utils import activation
 from utils import activation_gradient
-from utils import generate_output_file
 
 
 class network:
@@ -159,5 +158,4 @@ class network:
         self.A[L] = activation(self.Z[L], 'sigmoid')
 
         Y_hat = self.A[L]
-        generate_output_file(Y_hat)
         return Y_hat
