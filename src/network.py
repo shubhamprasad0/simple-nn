@@ -76,7 +76,7 @@ class network:
         self.A[L - 1] = activation(self.Z[L - 1], 'sigmoid')
 
     def compute_cost(self):
-        ''' This method computes the cross-entroy cost. '''
+        ''' This method computes the cross-entropy cost. '''
 
         L = self.L
         m = self.m
@@ -96,13 +96,13 @@ class network:
         L = self.L - 1
         self.dZ[L] = self.A[L] - self.Y
         self.dW[L] = np.dot(self.dZ[L], self.A[L - 1].T) / self.m
-        self.db[L] = np.sum(self.dZ[L], axis=1, keepdims=True)
+        self.db[L] = np.sum(self.dZ[L], axis=1, keepdims=True) / self.m
 
         for l in reversed(range(L)[1:]):
             self.dZ[l] = np.dot(self.W[l + 1].T, self.dZ[l + 1]) * \
                 activation_gradient(self.Z[l], 'relu')
             self.dW[l] = np.dot(self.dZ[l], self.A[l - 1].T) / self.m
-            self.db[l] = np.sum(self.dZ[l], axis=1, keepdims=True)
+            self.db[l] = np.sum(self.dZ[l], axis=1, keepdims=True) / self.m
 
     def update_parameters(self, learning_rate):
         ''' This method performs the gradient descent update to

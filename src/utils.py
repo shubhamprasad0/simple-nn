@@ -28,7 +28,11 @@ def activation(Z, func_name):
 
 
 def sigmoid(Z):
-    ''' This method applies the sigmoid activation function to the input Z and
+    '''
+    NOTE : Apply the sigmoid activation with the cross-entropy cost function
+    and not with the log-likelihood cost function.
+
+    This method applies the sigmoid activation function to the input Z and
     returns the output as A.
 
     Arguments:
@@ -60,7 +64,11 @@ def relu(Z):
 
 
 def softmax(Z):
-    ''' This method applies the softmax activation to a vector Z and returns
+    '''
+    NOTE : softmax activation should be applied with log-likelihood cost
+    and not with the cross-entropy cost function.
+
+    This method applies the softmax activation to a vector Z and returns
     the output.
 
     Arguments:
