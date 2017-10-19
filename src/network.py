@@ -159,3 +159,36 @@ class network:
 
         Y_hat = self.A[L]
         return Y_hat
+
+    def store_parameters(self):
+        ''' This method stores the parameters W and b in file for future use.'''
+
+        L = self.L - 1
+        filename = input('Enter filename : ')
+
+        # store the file in output directory with .npz extension
+        filename = '../output/' + filename + '.npz'
+
+        stored_arrays = {'sizes': self.sizes}
+        for l in range(L):
+            stored_arrays['W' + str(l + 1)] = self.W[l + 1]
+            stored_arrays['b' + str(l + 1)] = self.b[l + 1]
+
+        np.savez(filename, **stored_arrays)
+
+    def load_parameters(self, filename):
+        ''' This method loads the parameters stored in the file 'filename'.
+
+        Arguments:
+        filename : complete path of the file in which parameters are stored
+        '''
+
+        L = self.L - 1
+        parameters = np.load(filename)
+
+        sizes = parameters['sizes']
+        print('NN layer sizes:', sizes)
+
+        for l in range(L):
+            self.W[l + 1] = parameters['W' + str(l + 1)]
+            self.b[l + 1] = parameters['b' + str(l + 1)]
