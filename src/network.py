@@ -204,11 +204,13 @@ class network:
 
         if output_activation == 'sigmoid':
             # cross-entropy cost function
-            self.cost = -(np.sum(np.sum(Y * np.log(Y_hat))) +
-                          np.sum(np.sum((1 - Y) * np.log(1 - Y_hat)))) / m
+            self.cost = -(np.sum(np.sum(np.nan_to_num(Y * np.log(Y_hat)))) +
+                          np.sum(np.sum(
+                              np.nan_to_num((1 - Y) * np.log(1 - Y_hat))))) / m
         elif output_activation == 'softmax':
             # log-likelihood cost function
-            self.cost = -(np.sum(np.sum(Y * np.log(Y_hat)))) / m
+            self.cost = - \
+                (np.sum(np.sum(np.nan_to_num((Y * np.log(Y_hat)))))) / m
 
         regularization_term = 0
         for l in range(L)[1:]:
