@@ -79,8 +79,8 @@ def softmax(Z):
     '''
 
     t = np.exp(Z)
-    t = t / np.sum(t, axis=0, keepdims=True)
-    return t
+    softmax_Z = t / np.sum(t, axis=0, keepdims=True)
+    return softmax_Z
 
 
 def one_hot_encoding(Y, num_classes):
@@ -129,19 +129,8 @@ def relu_gradient(Z):
     return relu_gradient
 
 
-def softmax_gradient(Z):
-    ''' This method finds the derivative of the softmax activation function and
-    finds and returns the value of the derivative for the input Z.
-
-    Arguments:
-    Z : real value or numpy array.
-
-    Returns:
-    softmax_gradient : value of the derivative of softmax function at Z.
-    '''
-
-
 def activation_gradient(Z, func_name):
+
     ''' This method applies the derivative of the activation function
     specified by 'func_name' to 'Z' and returns the value obtained.
 
@@ -150,7 +139,6 @@ def activation_gradient(Z, func_name):
     func_name : string denoting the activation function name.
                 'sigmoid' : refers to the sigmoid activation function.
                 'relu' : refers to the ReLU activation function.
-                'softmax' : refers to the softmax activation fucntion.
 
     Returns:
     A : real value or numpy array of the same dimension as Z, obtained after
@@ -161,11 +149,10 @@ def activation_gradient(Z, func_name):
         return sigmoid_gradient(Z)
     elif func_name == 'relu':
         return relu_gradient(Z)
-    elif func_name == 'softmax':
-        return softmax_gradient(Z)
 
 
 def one_hot_decoding(Y_hat):
+
     ''' This method converts the one-hot-encoded version of output labels, to
     normal (1, m) 1-D matrix form.
 
@@ -181,6 +168,7 @@ def one_hot_decoding(Y_hat):
 
 
 def generate_output_file(Y_hat):
+
     ''' This method generates the output file in required format.
 
     Arguments:
@@ -189,11 +177,12 @@ def generate_output_file(Y_hat):
 
     with open('../output/predictions.csv', 'w') as outfile:
         outfile.write('ImageId,Label\n')
-        for i, val in enumerate(Y_hat):
-            outfile.write(str(i + 1) + ',' + val + '\n')
+        for i, val in enumerate(Y_hat[0]):
+            outfile.write(str(i + 1) + ',' + str(val) + '\n')
 
 
 def score(Y_hat, Y):
+
     ''' This method calculates and returns the accuracy of the predictive model.
 
     Arguments:
