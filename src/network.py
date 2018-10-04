@@ -103,7 +103,7 @@ class network:
 
         # final mini-batch of size (possible zero) less than mini_batch_size
         if m % mini_batch_size != 0:
-            mini_batches.apppend(
+            mini_batches.append(
                 (X[:, num_mini_batch * mini_batch_size:],
                  Y[:, num_mini_batch * mini_batch_size:]))
 
